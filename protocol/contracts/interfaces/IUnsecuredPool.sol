@@ -18,7 +18,9 @@ interface IUnsecuredPool {
 		uint128 indexed id,
 		address indexed operator,
 		address indexed reserve,
-		uint256 amount
+		uint256 amount,
+		address user,
+		address onBehalfOf
 	);
 
 	function supply(address asset, uint256 amount) external;
@@ -30,7 +32,7 @@ interface IUnsecuredPool {
 		uint128 rate,
 		uint40 termDays
 	) external;
-	function repay(address asset, uint128 loanId, uint256 amount) external;
+	function repay(address asset, uint128 loanId, uint256 amount, address onBehalfOf) external;
 	function addReserve(
 		address asset, 
 		address aTokenAddress, 
