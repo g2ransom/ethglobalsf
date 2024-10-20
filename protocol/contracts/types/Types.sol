@@ -11,6 +11,7 @@ library Types {
     	address stableDebtTokenAddress;
     	address thTokenAddress;
     	address unsecuredDebtTokenAddress;
+    	uint256 lastBalance;
     	uint40 lastUpdateTimestamp;
     	uint128 accruedToTreasury;
     	uint128 accruedToGrants;

@@ -60,4 +60,10 @@ contract UnsecuredPool is IUnsecuredPool, UnsecuredPoolStorage, Ownable {
 	) external onlyOwner {
 
 	}
+
+	function _updateIndexes(
+		Types.Reserve storage reserve
+	) internal {
+
+	}
 }
