@@ -7,6 +7,7 @@ import {ICreditDelegationToken} from "@aave/core-v3/contracts/interfaces/ICredit
 import {IERC20} from "@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import {Ownable} from "@openzeppelin/contracts/access/Ownable.sol";
 import {Types} from "../types/Types.sol";
+import {IThToken} from "../interfaces/IThToken.sol";
 import {IUnsecuredPool} from "../interfaces/IUnsecuredPool.sol";
 import {UnsecuredPoolStorage} from "./UnsecuredPoolStorage.sol";
 
@@ -24,13 +25,13 @@ contract UnsecuredPool is IUnsecuredPool, UnsecuredPoolStorage, Ownable {
 		Types.Reserve storage reserve = _reserves[asset];
 		// IERC20(asset).transferFrom(msg.sender, address(this), amount);
 		POOL.supply(asset, amount, reserve.thTokenAddress, 0);
-		// IER20(reserve.thTokenAddress).mint(msg.sender, amount);
+		IThToken(reserve.thTokenAddress).mint(msg.sender, amount, reserve.liquidityIndex);
 	}
 
 	function withdraw(address asset, uint256 amount) public {
 		Types.Reserve storage reserve = _reserves[asset];
 		POOL.withdraw(asset, amount, msg.sender);
-		// IERC20(reserve.thTokenAddress).burn(msg.sender, amount);
+		IThToken(reserve.thTokenAddress).burn(msg.sender, amount, reserve.liquidityIndex);
 	}
 	
 	function originateLoan(
@@ -41,7 +42,7 @@ contract UnsecuredPool is IUnsecuredPool, UnsecuredPoolStorage, Ownable {
 		uint40 termDays
 	) external onlyOwner {
 		Types.Reserve storage reserve = _reserves[asset];
-		// IERC20(reserve.thTokenAddress).approveDelegation(msg.sender, amount);
+		IThToken(reserve.thTokenAddress).approveDelegation(msg.sender, amount);
 		POOL.borrow(asset, amount, 2, 0, msg.sender);
 	}
 
